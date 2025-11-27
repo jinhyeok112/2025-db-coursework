@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>게시판</title>
+    <%- include('header') %>
+</head>
+
+<body>
+    <div class="container mt-5 mb-5" style="max-width: 1000px;">
+        <div class="d-flex justify-content-between align-items-end mb-4 px-2">
+            <div>
+                <h5 class="text-secondary fw-bold mb-1">Community</h5>
+                <h1 class="fw-bold m-0" style="font-size: 2.2rem;">자유 게시판</h1>
+            </div>
+            <a href="/write" class="btn btn-primary">
+                + 새 글 작성
+            </a>
+        </div>
+
+        <div class="modern-card">
+            <div class="d-flex justify-content-end mb-4">
+                <form action="/" method="get" style="width: 300px;">
+                    <div class="input-group shadow-sm" style="border-radius: 20px; overflow: hidden;">
+                        <input type="text" name="search" class="form-control border-0 bg-light"
+                            placeholder="검색어를 입력하세요." value="<%= search %>" style="padding-left: 20px;">
+
+                        <button type="submit" class="btn btn-light text-primary fw-bold border-0 text-nowrap px-3">
+                            검색
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th width="10%">번호</th>
+                        <th width="60%" class="text-start ps-4">제목</th>
+                        <th width="15%">조회수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% posts.forEach(post=> { %>
+                        <tr style="cursor: pointer;" onclick="location.href='/post/<%= post.id %>'">
+                            <td>
+                                <% if(post.is_notice) { %>
+                                    <span class="badge-notice">공지</span>
+                                    <% } else { %>
+                                        <span class="text-secondary">
+                                            <%= post.id %>
+                                        </span>
+                                        <% } %>
+                            </td>
+                            <td class="text-start ps-4">
+                                <span class="<%= post.is_notice ? 'fw-bold text-dark' : 'text-dark' %>"
+                                    style="font-size: 1.05rem;">
+                                    <%= post.title %>
+                                </span>
+                            </td>
+                            <td class="text-secondary">
+                                <%= post.views %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-center mt-5">
+                <nav>
+                    <ul class="pagination">
+                        <% for(let i=1; i<=totalPages; i++) { %>
+                            <li class="page-item mx-1">
+                                <a class="page-link rounded-circle border-0 fw-bold <%= currentPage == i ? 'bg-dark text-white shadow' : 'bg-light text-secondary' %>"
+                                    href="/?page=<%= i %>&search=<%= search %>"
+                                    style="width: 40px; height: 40px; line-height: 25px; text-align: center;">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <p class="text-center text-secondary mt-4 small">
+            &copy; 2025 Board Project. Designed for Simplicity.
+        </p>
+    </div>
+</body>
+
+</html>
